@@ -36,15 +36,15 @@ export class HomeComponent implements OnInit {
   title : string ='';
   entered :boolean = false;
   description : string ='';  
-  productsQuery: QueryRef<any>;
-  products: Observable<any>;
+  // productsQuery: QueryRef<any>;
+  // products: Observable<any>;
 
   allProducts :any[] = [];
   constructor(private authService : AuthService, 
     private productService : ProductService,
     private router : Router,
     private appolo : Apollo) { 
-      this.productsQuery = this.appolo.watchQuery({
+      this.appolo.watchQuery({
         query: gql`
         {
           getAllProducts{
@@ -53,9 +53,14 @@ export class HomeComponent implements OnInit {
             description
           }
         } `,
+        }).valueChanges.subscribe((res:any) => {
+          debugger
+          console.log("Res: ", res);      
+          this.allProducts = res?.data?.getAllProducts;
+          console.log("Products: ", this.allProducts);
         });
-        this.products = this.productsQuery.valueChanges;
-        console.log("Products: ", this.products);
+        // this.products = this.productsQuery.valueChanges;
+        // console.log("Products: ", this.products);
         
         
         // .valueChanges.subscribe((res:any) => {
@@ -106,7 +111,7 @@ export class HomeComponent implements OnInit {
     this.productService.getProducts().subscribe( (prod:any) => {
       if(prod){
         console.log("prod: ",prod);
-        this.products = prod;
+        this.allProducts = prod;
         
       }
     });

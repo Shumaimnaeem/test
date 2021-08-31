@@ -53,41 +53,57 @@ import {getMainDefinition} from '@apollo/client/utilities';
   providers: [ 
     {
       provide: APOLLO_OPTIONS,
-      useFactory(httpLink: HttpLink): ApolloClientOptions<any> {
-        // Create an http link:
-        const http = httpLink.create({
-          uri: 'http://localhost:3000/graphql/',
-        });
-
-        // Create a WebSocket link:
-        const ws = new WebSocketLink({
-          uri: `ws://localhost:5000`,
-          options: {
-            reconnect: true,
-          },
-        });
-
-        // using the ability to split links, you can send data to each link
-        // depending on what kind of operation is being sent
-        const link = split(
-          // split based on operation type
-          ({query}) => {
-            const data = getMainDefinition(query);
-            return (
-              data.kind === 'OperationDefinition' && data.operation === 'subscription'
-            );
-          },
-          ws,
-          http,
-        );
-
+      useFactory(httpLink: HttpLink) {
         return {
-          link,
-          cache : new InMemoryCache(),
+          cache: new InMemoryCache(),
+          link: httpLink.create({
+            uri: 'http://localhost:3000/graphql/',
+          }),
         };
       },
       deps: [HttpLink],
     },
+
+
+
+    // {
+    //   provide: APOLLO_OPTIONS,
+    //   useFactory(httpLink: HttpLink): ApolloClientOptions<any> {
+    //     // Create an http link:
+    //     const http = httpLink.create({
+    //       uri: 'http://localhost:3000/graphql/',
+    //     });
+
+        // Create a WebSocket link:
+        // const ws = new WebSocketLink({
+        //   uri: `ws://localhost:5000`,
+        //   options: {
+        //     reconnect: true,
+        //   },
+        // });
+
+        // using the ability to split links, you can send data to each link
+        // depending on what kind of operation is being sent
+        // const link = split(
+        //   // split based on operation type
+        //   ({query}) => {
+        //     const data = getMainDefinition(query);
+        //     return (
+        //       data.kind === 'OperationDefinition' && data.operation === 'subscription'
+        //     );
+        //   },
+        //   ws,
+          // http,
+        // );
+
+        // return {
+          // link,
+          
+          // cache : new InMemoryCache(),
+        // };
+      // },
+      // deps: [HttpLink],
+    // },
   ],
   bootstrap: [AppComponent]
 })
