@@ -1,0 +1,30 @@
+<!-- [(ngModel)] = "product.description" -->
+<!-- [(ngModel)] = "product.title" -->
+<div>
+<form [formGroup]="addProductForm">
+
+    <input type="text" 
+    placeholder="Title" 
+    class="form-control"
+    formControlName="title"
+    [(ngModel)] = "product.title"
+    >
+    <input type="text" 
+    style="margin-left: 1%; width: 300px;" 
+    placeholder="Description" 
+    class="form-control"
+    formControlName="description"
+    [(ngModel)] = "product.description"
+    >
+    <button type="button" id="btn" 
+    style="margin-left: 1%" 
+    class="btn btn-primary" 
+    (click)="save()" >Save
+    </button>
+
+    <div *ngIf="entered && !product.title">
+        <div class="alert alert-danger" style="color: red;">Title is required</div>
+    </div>
+</form>
+</div>
+

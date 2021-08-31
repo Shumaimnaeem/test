@@ -1,0 +1,20 @@
+
+<h2>Products</h2>
+<div>
+    <button type="button" id="btn" style="margin-left: 1%" class="btn btn-primary" [routerLink]="['/addProduct']"> Add Product
+    </button>
+
+</div>
+
+<div *ngIf="allProducts.length >0">
+        
+</div>
+<h2>List Of Products</h2>
+    <li *ngFor="let product of allProducts"> 
+        {{product.title}}
+    <button type="button" style="margin-left: 5%" id="btn" class="btn btn-primary" [routerLink]="['/editProduct', product.id]" > Edit
+    </button>
+    <button type="button" style="margin-left: 1%" id="btn" class="btn btn-primary" (click)="deleteProduct(product)" >Delete</button>
+    </li>
+
+<button type="button" id="btn" class="btn btn-primary" (click)="logout()" >Log Out</button>
